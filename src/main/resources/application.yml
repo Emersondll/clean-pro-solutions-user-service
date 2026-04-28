@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: user-service
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/user_db}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    connection-timeout: 5000
+
+server:
+  port: ${SERVER_PORT:8082}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+    enabled: ${EUREKA_ENABLED:true}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+rabbitmq:
+  exchange:
+    rating: rating.exchange
+  queue:
+    rating-created: user-service.rating-created
+  routing-key:
+    rating-created: rating.created
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      userService:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  health:
+    circuitbreakers:
+      enabled: true
+
+logging:
+  level:
+    br.com.cleanprosolutions: INFO
+    org.springframework.amqp: WARN

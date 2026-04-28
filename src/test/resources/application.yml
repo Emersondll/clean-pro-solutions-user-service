@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: user-service-test
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/user_db_test
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  rabbitmq:
+    host: localhost
+
+eureka:
+  client:
+    enabled: false
+
+rabbitmq:
+  queues:
+    rating-created: user-service.rating.created
+  exchanges:
+    rating: rating.events
+  routing-keys:
+    rating-created: rating.created
+
+logging:
+  level:
+    br.com.cleanprosolutions: DEBUG
