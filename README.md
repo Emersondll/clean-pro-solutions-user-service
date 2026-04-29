@@ -1,43 +1,33 @@
-﻿# clean-pro-solutions-user-service
+# Clean Pro Solutions - User Service 👤
 
-GestÃ£o de perfis de usuÃ¡rios (Clientes e Prestadores).
+## 🎯 Papel no Ecossistema
+O **User Service** é o responsável pela gestão de perfis dentro da plataforma. Ele lida com:
+- Cadastro e manutenção de **Clientes**.
+- Cadastro e manutenção de **Profissionais de Limpeza**.
+- Armazenamento de preferências, endereços e perfis detalhados.
+- Integração com outros serviços para fornecer dados de perfil (Ex: para o `scheduling-service`).
 
-## ðŸš€ Tecnologias
-- **Java 21**
-- **Spring Boot 3.3.4**
-- **Spring Cloud (Eureka, OpenFeign, Config)**
-- **MongoDB** (PersistÃªncia de dados)
-- **RabbitMQ** (Mensageria assÃ­ncrona)
-- **JaCoCo** (RelatÃ³rios de cobertura)
-- **SpringDoc OpenAPI** (DocumentaÃ§Ã£o Swagger)
+## 🚀 Tecnologias
+- **Java 21** & **Spring Boot 3.3.4**
+- **MongoDB** (Persistência de perfis e preferências)
+- **RabbitMQ** (Sincronização de dados e eventos de cadastro)
+- **Netflix Eureka** (Service Discovery)
 
-## ðŸ“Š Qualidade e Testes
-Este projeto possui uma regra de integridade de cÃ³digo rigorosa:
-- **Cobertura MÃ­nima**: 80% de instruÃ§Ãµes cobertas (MandatÃ³rio).
-- **Enforcement**: O build falha automaticamente via plugin JaCoCo na fase de erify caso a cobertura seja inferior ao limite.
+## 🛠️ Como Executar
 
-## ðŸ› ï¸ Como rodar
+### 1. Execução Isolada (Individual)
+Para rodar apenas este serviço e suas dependências:
+```bash
+docker-compose up -d --build
+```
+O serviço estará disponível em `http://localhost:8082`.
 
-### PrÃ©-requisitos
-- Docker e Docker Compose instalados.
-- JDK 21 instalado localmente (opcional se usar Docker).
+### 2. Execução Integrada
+Este serviço é orquestrado pelo projeto principal [Clean Pro Platform](../README.md).
 
-### Via Maven (Local)
-`ash
-mvn clean verify
-`
-
-### Via Docker
-`ash
-docker build -t clean-pro-solutions-user-service .
-`
-
-## ðŸ—ï¸ Arquitetura
-O serviÃ§o segue os princÃ­pios de **Clean Architecture** e **Domain-Driven Design (DDD)**, com as seguintes camadas:
-- **Controller**: Porta de entrada para requisiÃ§Ãµes REST.
-- **Service**: Regras de negÃ³cio e orquestraÃ§Ã£o.
-- **Repository**: PersistÃªncia desacoplada via Spring Data.
-- **Document/Entity**: Modelagem do domÃ­nio.
+## 🧪 Qualidade
+- **Cobertura de Testes**: Mínimo de 80%.
+- **Build**: `mvn clean verify`.
 
 ---
-Â© 2026 Clean Pro Solutions - Todos os direitos reservados.
+© 2026 Clean Pro Solutions - Desenvolvido por Emerson.

@@ -1,0 +1,49 @@
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: user-mongo
+    ports:
+      - "27018:27017" # Changed port to avoid conflict if running multiple services locally
+    networks:
+      - user-net
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: user-rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    networks:
+      - user-net
+
+  service-registry:
+    build:
+      context: ../clean-pro-solutions-service-registry
+      dockerfile: Dockerfile
+    container_name: user-registry
+    ports:
+      - "8762:8761"
+    networks:
+      - user-net
+
+  user-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8082:8082"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/user_db
+      RABBITMQ_HOST: rabbitmq
+      EUREKA_SERVER_URL: http://service-registry:8761/eureka
+    depends_on:
+      - mongo
+      - rabbitmq
+      - service-registry
+    networks:
+      - user-net
+
+networks:
+  user-net:
+    driver: bridge
