@@ -1,5 +1,7 @@
 package br.com.cleanprosolutions.user.controller;
 
+import br.com.cleanprosolutions.user.dto.ContractorProfileRequest;
+import br.com.cleanprosolutions.user.dto.DeviceTokenRequest;
 import br.com.cleanprosolutions.user.dto.UserRequest;
 import br.com.cleanprosolutions.user.dto.UserResponse;
 import br.com.cleanprosolutions.user.enumerations.UserType;
@@ -131,6 +133,47 @@ public class UserController {
         log.info("DELETE /users/{}", id);
         userService.deactivate(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Updates a contractor's professional profile (bio, specialties, portfolio).
+     *
+     * @param id      contractor user MongoDB ID
+     * @param request contractor profile data
+     * @return 200 OK with updated user profile
+     */
+    @PutMapping("/{id}/contractor-profile")
+    @Operation(summary = "Update contractor professional profile")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Profile updated"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<UserResponse> updateContractorProfile(
+            @PathVariable final String id,
+            @RequestBody final ContractorProfileRequest request) {
+        log.info("PUT /users/{}/contractor-profile", id);
+        return ResponseEntity.ok(userService.updateContractorProfile(id, request));
+    }
+
+    /**
+     * Registers a device token for push notification delivery.
+     *
+     * @param id      user MongoDB ID
+     * @param request device token payload
+     * @return 200 OK
+     */
+    @PostMapping("/{id}/device-tokens")
+    @Operation(summary = "Register a device token for push notifications")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Token registered"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    public ResponseEntity<Void> addDeviceToken(
+            @PathVariable final String id,
+            @Valid @RequestBody final DeviceTokenRequest request) {
+        log.info("POST /users/{}/device-tokens", id);
+        userService.addDeviceToken(id, request.token());
+        return ResponseEntity.ok().build();
     }
 
     /**

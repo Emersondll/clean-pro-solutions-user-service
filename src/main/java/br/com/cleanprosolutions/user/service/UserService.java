@@ -1,5 +1,6 @@
 package br.com.cleanprosolutions.user.service;
 
+import br.com.cleanprosolutions.user.dto.ContractorProfileRequest;
 import br.com.cleanprosolutions.user.dto.UserRequest;
 import br.com.cleanprosolutions.user.dto.UserResponse;
 import br.com.cleanprosolutions.user.enumerations.UserType;
@@ -72,6 +73,30 @@ public interface UserService {
      * @return list of nearby user profiles
      */
     List<UserResponse> findNearby(double latitude, double longitude, double radiusKm, UserType type);
+
+    /**
+     * Updates the contractor's professional profile (bio, specialties, portfolio).
+     *
+     * <p>Only applicable to {@code CONTRACTOR} type users.
+     * Creates the embedded profile if it doesn't exist yet.</p>
+     *
+     * @param userId  the contractor's user ID
+     * @param request profile data to apply
+     * @return the updated user profile
+     * @throws br.com.cleanprosolutions.user.exception.UserNotFoundException if not found
+     */
+    UserResponse updateContractorProfile(String userId, ContractorProfileRequest request);
+
+    /**
+     * Registers a device token for push notification delivery.
+     *
+     * <p>Duplicate tokens are silently ignored.</p>
+     *
+     * @param userId the user ID
+     * @param token  the FCM device token
+     * @throws br.com.cleanprosolutions.user.exception.UserNotFoundException if not found
+     */
+    void addDeviceToken(String userId, String token);
 
     /**
      * Updates the rating aggregation for a contractor.

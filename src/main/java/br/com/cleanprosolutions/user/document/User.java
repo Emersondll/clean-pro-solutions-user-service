@@ -13,6 +13,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * MongoDB document representing a user (CLIENT or CONTRACTOR) in the platform.
@@ -78,6 +80,13 @@ public class User {
 
     /** Whether the account is active. Inactive accounts are soft-deleted. */
     private boolean active;
+
+    /** FCM device tokens for push notification delivery. */
+    @Builder.Default
+    private List<String> deviceTokens = new ArrayList<>();
+
+    /** Professional profile for contractors — null for CLIENT users. */
+    private ContractorProfile contractorProfile;
 
     /** Profile creation timestamp (UTC). */
     private Instant createdAt;

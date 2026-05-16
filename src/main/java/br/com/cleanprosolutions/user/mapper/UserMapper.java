@@ -74,7 +74,8 @@ public class UserMapper {
                 user.getAvgRating(),
                 user.getTotalRatings(),
                 user.isActive(),
-                user.getCreatedAt()
+                user.getCreatedAt(),
+                user.getContractorProfile()
         );
     }
 

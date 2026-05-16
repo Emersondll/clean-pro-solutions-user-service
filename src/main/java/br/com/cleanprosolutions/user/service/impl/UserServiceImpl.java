@@ -1,6 +1,8 @@
 package br.com.cleanprosolutions.user.service.impl;
 
+import br.com.cleanprosolutions.user.document.ContractorProfile;
 import br.com.cleanprosolutions.user.document.User;
+import br.com.cleanprosolutions.user.dto.ContractorProfileRequest;
 import br.com.cleanprosolutions.user.dto.UserRequest;
 import br.com.cleanprosolutions.user.dto.UserResponse;
 import br.com.cleanprosolutions.user.enumerations.UserType;
@@ -125,6 +127,45 @@ public class UserServiceImpl implements UserService {
 
         log.info("Proximity search returned {} results", results.size());
         return results.stream().map(mapper::toResponse).toList();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserResponse updateContractorProfile(final String userId, final ContractorProfileRequest request) {
+        log.info("Updating contractor profile — userId: {}", userId);
+        final User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        final ContractorProfile profile = ContractorProfile.builder()
+                .bio(request.bio())
+                .specialties(request.specialties() != null ? request.specialties() : new java.util.ArrayList<>())
+                .portfolioPhotos(request.portfolioPhotos() != null ? request.portfolioPhotos() : new java.util.ArrayList<>())
+                .certifications(request.certifications() != null ? request.certifications() : new java.util.ArrayList<>())
+                .verificationStatus(user.getContractorProfile() != null
+                        ? user.getContractorProfile().getVerificationStatus()
+                        : "UNVERIFIED")
+                .build();
+
+        user.setContractorProfile(profile);
+        user.setUpdatedAt(Instant.now());
+        final User saved = repository.save(user);
+        log.info("Contractor profile updated for userId: {}", userId);
+        return mapper.toResponse(saved);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void addDeviceToken(final String userId, final String token) {
+        log.info("Registering device token for user: {}", userId);
+        final User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.getDeviceTokens().contains(token)) {
+            user.getDeviceTokens().add(token);
+            user.setUpdatedAt(Instant.now());
+            repository.save(user);
+            log.info("Device token registered for user: {}", userId);
+        }
     }
 
     /**

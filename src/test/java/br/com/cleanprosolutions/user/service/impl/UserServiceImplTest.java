@@ -71,7 +71,7 @@ class UserServiceImplTest {
 
         response = new UserResponse(
                 "user-id-001", "John Doe", "john@example.com", "+5511999999999",
-                UserType.CONTRACTOR, null, -23.5, -46.6, 0.0, 0, true, Instant.now());
+                UserType.CONTRACTOR, null, -23.5, -46.6, 0.0, 0, true, Instant.now(), null);
     }
 
     @Test
