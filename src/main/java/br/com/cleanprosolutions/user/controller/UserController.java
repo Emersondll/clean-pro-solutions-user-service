@@ -32,7 +32,7 @@ import java.util.List;
  *
  * <p>Provides endpoints for CRUD operations and geospatial proximity search.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Slf4j

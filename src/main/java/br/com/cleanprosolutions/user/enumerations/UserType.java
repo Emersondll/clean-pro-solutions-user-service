@@ -8,7 +8,7 @@ package br.com.cleanprosolutions.user.enumerations;
  *   <li>{@link #CONTRACTOR} — Professional who offers services on the platform</li>
  * </ul>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 public enum UserType {

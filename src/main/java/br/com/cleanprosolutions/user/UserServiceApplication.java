@@ -16,7 +16,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  *
  * <p>Registers itself with Eureka under the name {@code user-service}.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @SpringBootApplication

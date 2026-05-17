@@ -25,7 +25,7 @@ import java.util.List;
  * <p>The {@code location} field uses a {@link GeoJsonPoint} with a 2dsphere index,
  * enabling MongoDB to perform efficient proximity queries.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Data

@@ -13,7 +13,7 @@ import java.time.Instant;
  * @param totalRatings  updated total number of ratings
  * @param timestamp     event creation timestamp (UTC)
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 public record RatingCreatedEvent(

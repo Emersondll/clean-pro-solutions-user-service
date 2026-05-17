@@ -14,7 +14,7 @@ import java.util.List;
  * <p>Stored inline within the {@link User} document to avoid extra round-trips.
  * Portfolio photos are stored as URLs pointing to an external object store.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Data

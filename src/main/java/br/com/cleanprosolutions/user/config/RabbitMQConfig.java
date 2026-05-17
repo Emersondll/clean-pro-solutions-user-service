@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * <p>Declares the exchange and queue for consuming {@code RatingCreated} events
  * published by the {@code rating-service}.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Configuration

@@ -23,7 +23,7 @@ import java.util.Optional;
  *   <li>{@link Distance} with {@code Metrics.KILOMETERS} triggers spherical calculation.</li>
  * </ul>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Repository

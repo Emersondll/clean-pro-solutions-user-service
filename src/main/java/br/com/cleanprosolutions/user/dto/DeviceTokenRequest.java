@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 /**
  * Request payload for registering a device token for push notifications.
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 public record DeviceTokenRequest(

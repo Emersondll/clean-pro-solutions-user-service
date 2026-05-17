@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * <p>All conversions are explicit — no reflection frameworks are used,
  * ensuring compile-time safety and clear intent.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Component

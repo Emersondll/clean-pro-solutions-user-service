@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  *
  * <p>Used within {@link User} as an embedded sub-document (not a separate collection).</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Data

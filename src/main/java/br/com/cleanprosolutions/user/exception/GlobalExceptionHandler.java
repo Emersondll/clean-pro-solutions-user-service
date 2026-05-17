@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  *
  * <p>Maps domain and validation exceptions to RFC 7807 Problem Detail responses.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Slf4j

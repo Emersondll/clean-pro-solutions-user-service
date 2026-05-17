@@ -27,7 +27,7 @@ import java.util.List;
  * <p>Handles user profile management and proximity search using
  * MongoDB 2dsphere geospatial indexing.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Slf4j

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Unit tests for {@link RatingCreatedConsumer}.
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)

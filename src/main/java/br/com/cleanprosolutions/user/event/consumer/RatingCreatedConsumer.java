@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  * Implements idempotency by relying on the service layer's silent-ignore policy
  * when the contractor ID is not found.</p>
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 @Slf4j

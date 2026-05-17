@@ -10,7 +10,7 @@ import java.util.List;
  * @param portfolioPhotos  public URLs of portfolio photos
  * @param certifications   professional certifications or credentials
  *
- * @author Clean Pro Solutions Team
+ * @author Emerson Lima
  * @since 1.0.0
  */
 public record ContractorProfileRequest(
