@@ -1,6 +1,7 @@
 package br.com.cleanprosolutions.user.service.impl;
 
 import br.com.cleanprosolutions.user.document.User;
+import br.com.cleanprosolutions.user.dto.ContractorProfileRequest;
 import br.com.cleanprosolutions.user.dto.UserRequest;
 import br.com.cleanprosolutions.user.dto.UserResponse;
 import br.com.cleanprosolutions.user.enumerations.UserType;
@@ -8,6 +9,8 @@ import br.com.cleanprosolutions.user.exception.UserAlreadyExistsException;
 import br.com.cleanprosolutions.user.exception.UserNotFoundException;
 import br.com.cleanprosolutions.user.mapper.UserMapper;
 import br.com.cleanprosolutions.user.repository.UserRepository;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Point;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.Optional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -205,5 +210,92 @@ class UserServiceImplTest {
         userService.updateRating("nonexistent-id", 4.5, 10);
 
         verify(repository, never()).save(any());
+    }
+
+    // ─── findNearby ──────────────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("shouldReturnNearbyUsersWithoutTypeFilter")
+    void shouldReturnNearbyUsersWithoutTypeFilter() {
+        when(repository.findByLocationNearAndActiveTrue(any(Point.class), any(Distance.class)))
+                .thenReturn(List.of(user));
+        when(mapper.toResponse(user)).thenReturn(response);
+
+        final List<UserResponse> result = userService.findNearby(-23.5, -46.6, 10.0, null);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).id()).isEqualTo("user-id-001");
+    }
+
+    @Test
+    @DisplayName("shouldReturnNearbyUsersFilteredByType")
+    void shouldReturnNearbyUsersFilteredByType() {
+        when(repository.findByLocationNearAndActiveTrueAndType(any(Point.class), any(Distance.class), any(UserType.class)))
+                .thenReturn(List.of(user));
+        when(mapper.toResponse(user)).thenReturn(response);
+
+        final List<UserResponse> result = userService.findNearby(-23.5, -46.6, 5.0, UserType.CONTRACTOR);
+
+        assertThat(result).hasSize(1);
+    }
+
+    // ─── updateContractorProfile ─────────────────────────────────────────────
+
+    @Test
+    @DisplayName("shouldUpdateContractorProfileWhenUserFound")
+    void shouldUpdateContractorProfileWhenUserFound() {
+        final ContractorProfileRequest profileReq = new ContractorProfileRequest(
+                "Expert cleaner", List.of("deep cleaning"), List.of(), List.of());
+        when(repository.findById("user-id-001")).thenReturn(Optional.of(user));
+        when(repository.save(any(User.class))).thenReturn(user);
+        when(mapper.toResponse(user)).thenReturn(response);
+
+        final UserResponse result = userService.updateContractorProfile("user-id-001", profileReq);
+
+        assertThat(result).isNotNull();
+        verify(repository).save(user);
+    }
+
+    @Test
+    @DisplayName("shouldThrowUserNotFoundWhenUpdatingProfileOfNonexistentUser")
+    void shouldThrowUserNotFoundWhenUpdatingProfileOfNonexistentUser() {
+        final ContractorProfileRequest profileReq = new ContractorProfileRequest("bio", null, null, null);
+        when(repository.findById("nonexistent-id")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.updateContractorProfile("nonexistent-id", profileReq))
+                .isInstanceOf(UserNotFoundException.class);
+    }
+
+    // ─── addDeviceToken ──────────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("shouldAddDeviceTokenWhenUserFoundAndTokenIsNew")
+    void shouldAddDeviceTokenWhenUserFoundAndTokenIsNew() {
+        when(repository.findById("user-id-001")).thenReturn(Optional.of(user));
+
+        userService.addDeviceToken("user-id-001", "new-fcm-token");
+
+        assertThat(user.getDeviceTokens()).contains("new-fcm-token");
+        verify(repository).save(user);
+    }
+
+    @Test
+    @DisplayName("shouldNotSaveWhenDeviceTokenAlreadyRegistered")
+    void shouldNotSaveWhenDeviceTokenAlreadyRegistered() {
+        user.getDeviceTokens().add("existing-token");
+        when(repository.findById("user-id-001")).thenReturn(Optional.of(user));
+
+        userService.addDeviceToken("user-id-001", "existing-token");
+
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("shouldThrowUserNotFoundWhenAddingTokenToNonexistentUser")
+    void shouldThrowUserNotFoundWhenAddingTokenToNonexistentUser() {
+        when(repository.findById("nonexistent-id")).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.addDeviceToken("nonexistent-id", "token"))
+                .isInstanceOf(UserNotFoundException.class);
     }
 }

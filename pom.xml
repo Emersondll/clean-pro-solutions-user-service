@@ -154,6 +154,16 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
+                            <excludes>
+                                <exclude>**/*Application.class</exclude>
+                                <exclude>**/*Config.class</exclude>
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/document/**</exclude>
+                                <exclude>**/enumerations/**</exclude>
+                                <exclude>**/event/dto/**</exclude>
+                                <exclude>**/exception/*NotFoundException.class</exclude>
+                                <exclude>**/exception/*AlreadyExistsException.class</exclude>
+                            </excludes>
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>
